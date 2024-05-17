@@ -1,0 +1,199 @@
+<html><head><style>@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>ParaBank | Accounts Overview</title>
+		<link href="/parabank/template.css" rel="stylesheet" type="text/css">
+		<link href="/parabank/style.css" rel="stylesheet" type="text/css">
+		<script src="/parabank/webjars/angularjs/1.8.2/angular.min.js"></script>
+	</head>
+
+	<body>
+		<div id="mainPanel">
+			
+				
+				
+					
+
+
+
+<div id="topPanel">
+  <a href="/parabank/admin.htm"><img src="/parabank/images/clear.gif" width="56" height="42" border="0" class="admin"></a>
+  <a href="/parabank/index.htm"><img src="/parabank/images/logo.gif" alt="ParaBank" width="136" height="31" border="0" class="logo" title="ParaBank"></a>
+  <p class="caption">Experience the difference</p>
+</div>
+<div id="headerPanel" style="background: url(/parabank/images/header-customer.jpg) 0 0 no-repeat;">
+  
+
+
+<ul class="leftmenu">
+  <li class="Solutions">Solutions</li>
+  <li><a href="about.htm">About Us</a></li>
+  <li><a href="services.htm">Services</a></li>
+  <li><a href="http://www.parasoft.com/jsp/products.jsp">Products</a></li>
+  <li><a href="http://www.parasoft.com/jsp/pr/contacts.jsp">Locations</a></li>
+  <li><a href="admin.htm">Admin Page</a></li>
+  
+</ul>
+  
+
+
+<ul class="button">
+  <li class="home"><a href="/parabank/index.htm">home</a></li>
+  <li class="aboutus"><a href="about.htm">about</a></li>
+  <li class="contact"><a href="contact.htm">contact</a></li>
+</ul>
+</div>
+				
+			
+			<div id="bodyPanel">
+				<div id="leftPanel">
+					
+						
+						
+							
+
+
+<p class="smallText"><b>Welcome</b> Juan Karlitos</p>
+
+<h2>Account Services</h2>
+
+
+
+<ul>
+  <li><a href="/parabank/openaccount.htm">Open New Account</a></li>
+  <li><a href="/parabank/overview.htm">Accounts Overview</a></li>
+  <li><a href="/parabank/transfer.htm">Transfer Funds</a></li>
+  <li><a href="/parabank/billpay.htm">Bill Pay</a></li>
+  <li><a href="/parabank/findtrans.htm">Find Transactions</a></li>
+  <li><a href="/parabank/updateprofile.htm">Update Contact Info</a></li>
+  <li><a href="/parabank/requestloan.htm">Request Loan</a></li>
+  <li><a href="/parabank/logout.htm">Log Out</a></li>
+</ul>
+						
+					
+				</div>
+				<div id="rightPanel">
+					
+
+
+<div ng-app="OverviewAccountsApp" ng-controller="OverviewAccountsCtrl" class="ng-scope">
+  <!-- ngIf: showOverview --><div ng-if="showOverview" class="ng-scope">
+    <h1 class="title">Accounts Overview</h1>
+    <table id="accountTable" class="gradient-style">
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Balance*</th>
+          <th>Available Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- ngRepeat: account in accounts --><tr ng-repeat="account in accounts" class="ng-scope">
+          <td><a href="activity.htm?id=14121" class="ng-binding">14121</a></td>
+          <td class="ng-binding">$315.50</td>
+          <td class="ng-binding">$315.50</td>
+        </tr><!-- end ngRepeat: account in accounts --><tr ng-repeat="account in accounts" class="ng-scope">
+          <td><a href="activity.htm?id=14232" class="ng-binding">14232</a></td>
+          <td class="ng-binding">$100.00</td>
+          <td class="ng-binding">$100.00</td>
+        </tr><!-- end ngRepeat: account in accounts --><tr ng-repeat="account in accounts" class="ng-scope">
+          <td><a href="activity.htm?id=14676" class="ng-binding">14676</a></td>
+          <td class="ng-binding">$100.00</td>
+          <td class="ng-binding">$100.00</td>
+        </tr><!-- end ngRepeat: account in accounts -->
+
+        <tr>
+          <td align="right"><b>Total</b></td>
+          <td><b class="ng-binding">$515.50</b></td>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">*Balance includes deposits that may be subject to holds
+        </td></tr>
+      </tfoot>
+    </table>
+
+  </div><!-- end ngIf: showOverview -->
+
+  <!-- ngIf: showError -->
+</div>
+
+<script>
+    var app = angular.module('OverviewAccountsApp', []);
+    app.controller('OverviewAccountsCtrl', function ($scope, $http) {
+        $scope.showOverview = true;
+        $scope.showError = false;
+        
+        $http.get("services_proxy/bank/customers/" + 12878 + "/accounts", {timeout:30000})
+            .then(function (response) {
+                $scope.accounts = [];
+                $scope.accounts = response.data;
+                $scope.totalBalance = computeTotalBalance($scope.accounts);
+
+                angular.forEach($scope.accounts, function(account) {
+                    account.availableBalance = getAvailableBalance(account);
+                });
+            })
+            .catch(function (response){
+                showError(response);
+            });
+
+        function getAvailableBalance(account) {
+            return account.balance < 0 ? 0 : account.balance;
+        }
+
+        function computeTotalBalance(accounts) {
+            var totalBalance = 0.0;
+            angular.forEach(accounts, function(account) {
+                totalBalance = totalBalance + parseFloat(account.balance, 10);
+            });
+            return totalBalance;
+        }
+        
+        function showError(error) {
+            $scope.showOverview = false;
+            $scope.showError = true;
+            var status = error.status > 0 ? error.status : "timeout";
+            var data = error.data ? error.data : "Server timeout"
+            console.error("Server returned " + status + ": " + data);
+        }
+
+    });
+
+	app.filter('commaLess', function() {
+		return function(input) {
+			return (input) ? input.toString().trim().replace(",","") : null;
+		};
+	});
+</script>
+				</div>
+			</div>
+		</div>
+		
+
+
+<div id="footermainPanel">
+  <div id="footerPanel">
+    <ul>
+      <li><a href="/parabank/index.htm">Home</a>| </li>
+      <li><a href="about.htm">About Us</a>| </li>
+      <li><a href="services.htm">Services</a>| </li>
+      <li><a href="http://www.parasoft.com/jsp/products.jsp">Products</a>| </li>
+      <li><a href="http://www.parasoft.com/jsp/pr/contacts.jsp">Locations</a>| </li>
+      <li><a href="http://forums.parasoft.com/">Forum</a>| </li>
+      <li><a href="/parabank/sitemap.htm">Site Map</a>| </li>
+      <li><a href="contact.htm">Contact Us</a></li>
+    </ul>
+    <p class="copyright">© Parasoft. All rights reserved.</p>
+    <ul class="visit">
+      <li>Visit us at:</li>
+      <li><a href="http://www.parasoft.com/" target="_blank">www.parasoft.com</a></li>
+    </ul>
+  </div>
+</div>
+	
+
+</body></html>

@@ -1,0 +1,283 @@
+<html><head><style>@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>ParaBank | Account Activity</title>
+		<link href="/parabank/template.css" rel="stylesheet" type="text/css">
+		<link href="/parabank/style.css" rel="stylesheet" type="text/css">
+		<script src="/parabank/webjars/angularjs/1.8.2/angular.min.js"></script>
+	</head>
+
+	<body>
+		<div id="mainPanel">
+			
+				
+				
+					
+
+
+
+<div id="topPanel">
+  <a href="/parabank/admin.htm"><img src="/parabank/images/clear.gif" width="56" height="42" border="0" class="admin"></a>
+  <a href="/parabank/index.htm"><img src="/parabank/images/logo.gif" alt="ParaBank" width="136" height="31" border="0" class="logo" title="ParaBank"></a>
+  <p class="caption">Experience the difference</p>
+</div>
+<div id="headerPanel" style="background: url(/parabank/images/header-customer.jpg) 0 0 no-repeat;">
+  
+
+
+<ul class="leftmenu">
+  <li class="Solutions">Solutions</li>
+  <li><a href="about.htm">About Us</a></li>
+  <li><a href="services.htm">Services</a></li>
+  <li><a href="http://www.parasoft.com/jsp/products.jsp">Products</a></li>
+  <li><a href="http://www.parasoft.com/jsp/pr/contacts.jsp">Locations</a></li>
+  <li><a href="admin.htm">Admin Page</a></li>
+  
+</ul>
+  
+
+
+<ul class="button">
+  <li class="home"><a href="/parabank/index.htm">home</a></li>
+  <li class="aboutus"><a href="about.htm">about</a></li>
+  <li class="contact"><a href="contact.htm">contact</a></li>
+</ul>
+</div>
+				
+			
+			<div id="bodyPanel">
+				<div id="leftPanel">
+					
+						
+						
+							
+
+
+<p class="smallText"><b>Welcome</b> Juan Karlitos</p>
+
+<h2>Account Services</h2>
+
+
+
+<ul>
+  <li><a href="/parabank/openaccount.htm">Open New Account</a></li>
+  <li><a href="/parabank/overview.htm">Accounts Overview</a></li>
+  <li><a href="/parabank/transfer.htm">Transfer Funds</a></li>
+  <li><a href="/parabank/billpay.htm">Bill Pay</a></li>
+  <li><a href="/parabank/findtrans.htm">Find Transactions</a></li>
+  <li><a href="/parabank/updateprofile.htm">Update Contact Info</a></li>
+  <li><a href="/parabank/requestloan.htm">Request Loan</a></li>
+  <li><a href="/parabank/logout.htm">Log Out</a></li>
+</ul>
+						
+					
+				</div>
+				<div id="rightPanel">
+					
+
+
+
+<div ng-app="AccountDetailsApp" ng-controller="rootCtrl" class="ng-scope">
+  <!-- ngIf: showDetails --><div ng-if="showDetails" ng-controller="AccountDetailsCtrl" class="ng-scope">
+    <h1 class="title">Account Details</h1>
+
+    <table>
+      <tbody><tr>
+        <td align="right">Account Number:</td>
+        <td id="accountId" class="ng-binding">13899</td>
+      </tr>
+      <tr>
+        <td align="right">Account Type:</td>
+        <td id="accountType" class="ng-binding">SAVINGS</td>
+      </tr>
+      <tr>
+        <td align="right">Balance:</td>
+        <td id="balance" class="ng-binding">$10.00</td>
+      </tr>
+      <tr>
+        <td align="right">Available:</td>
+        <td id="availableBalance" class="ng-binding">$10.00</td>
+      </tr>
+    </tbody></table>
+
+    <br>
+  </div><!-- end ngIf: showDetails -->
+  <!-- ngIf: showActivity --><div ng-if="showActivity" ng-controller="AccountActivityCtrl" class="ng-scope">
+    <h1 class="title">Account Activity</h1>
+    <form ng-submit="submit()" class="ng-pristine ng-valid">
+      <table class="form_activity">
+        <tbody><tr>
+          <td align="right"><b>Activity Period:</b></td>
+          <td>
+            <select id="month" name="month" class="input ng-pristine ng-untouched ng-valid ng-not-empty" ng-init="activityPeriod = 'All'" ng-model="activityPeriod">
+              
+                <option value="All" selected="selected">All</option>
+              
+                <option value="enero">enero</option>
+              
+                <option value="febrero">febrero</option>
+              
+                <option value="marzo">marzo</option>
+              
+                <option value="abril">abril</option>
+              
+                <option value="mayo">mayo</option>
+              
+                <option value="junio">junio</option>
+              
+                <option value="julio">julio</option>
+              
+                <option value="agosto">agosto</option>
+              
+                <option value="septiembre">septiembre</option>
+              
+                <option value="octubre">octubre</option>
+              
+                <option value="noviembre">noviembre</option>
+              
+                <option value="diciembre">diciembre</option>
+              
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td align="right"><b>Type:</b></td>
+          <td>
+            <select id="transactionType" name="transactionType" class="input ng-pristine ng-untouched ng-valid ng-not-empty" ng-init="type = 'All'" ng-model="type">
+              
+                <option value="All" selected="selected">All</option>
+              
+                <option value="Credit">Credit</option>
+              
+                <option value="Debit">Debit</option>
+              
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" class="button" value="Go"></td>
+        </tr>
+      </tbody></table>
+    </form>
+
+    <br>
+
+    <!-- ngIf: transactions.length <= 0 -->
+
+    <!-- ngIf: transactions.length > 0 --><table ng-if="transactions.length > 0" id="transactionTable" class="gradient-style ng-scope">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Transaction</th>
+          <th>Debit (-)</th>
+          <th>Credit (+)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ngRepeat: transaction in transactions --><tr ng-repeat="transaction in transactions" class="ng-scope">
+          <td class="ng-binding">06-15-2023</td>
+          <td><a href="transaction.htm?id=14587" class="ng-binding">Funds Transfer Received</a></td>
+
+          <!-- ngIf: transaction.type == 'Debit' -->
+          <!-- ngIf: transaction.type != 'Debit' --><td ng-if="transaction.type != 'Debit'" class="ng-scope"></td><!-- end ngIf: transaction.type != 'Debit' -->
+
+          <!-- ngIf: transaction.type == 'Credit' --><td ng-if="transaction.type == 'Credit'" class="ng-binding ng-scope">$10.00</td><!-- end ngIf: transaction.type == 'Credit' -->
+          <!-- ngIf: transaction.type != 'Credit' -->
+        </tr><!-- end ngRepeat: transaction in transactions -->
+      </tbody>
+    </table><!-- end ngIf: transactions.length > 0 -->
+  </div><!-- end ngIf: showActivity -->
+  
+  <!-- ngIf: showError -->
+
+</div>
+
+<script>
+    var app = angular.module('AccountDetailsApp', []);
+
+    app.controller('AccountDetailsCtrl', function ($scope, $rootScope, $http) {
+        $http.get("services_proxy/bank/accounts/13899", {timeout:30000})
+            .then(function (response) {
+                $scope.account = response.data;
+                $scope.account.availableBalance = getAvailableBalance($scope.account);
+            })
+            .catch(function(response) {
+                reportError($rootScope, response);
+            });
+
+        function getAvailableBalance(account) {
+            return account.balance < 0 ? 0 : account.balance;
+        }
+    });
+
+    app.controller('AccountActivityCtrl', function ($scope, $rootScope, $http) {
+        $http.get("services_proxy/bank/accounts/13899/transactions", {timeout:30000})
+            .then(function (response) {
+                $scope.transactions = [];
+                $scope.transactions = response.data;
+            })
+            .catch(function(response) {
+                reportError($rootScope, response);
+            });
+
+        $scope.submit = function() {
+            $http.get("services_proxy/bank/accounts/13899/transactions/month/" + $scope.activityPeriod + "/type/" + $scope.type, {timeout:30000})
+                .then(function (response) {
+                    $scope.transactions = response.data;
+                })
+                .catch(function(response) {
+                    reportError($rootScope, response);
+                });
+        };
+    });
+    
+    app.controller('rootCtrl', function ($rootScope) {
+        $rootScope.showDetails = true;
+        $rootScope.showActivity = true;
+    });
+    
+    function reportError(scope, error){
+        scope.showDetails = false;
+        scope.showActivity = false;
+        scope.showError = true;
+        
+        var status = error.status > 0 ? error.status : "timeout";
+        var data = error.data ? error.data : "Server timeout"
+        console.error("Server returned " + status + ": " + data);
+    }
+
+	app.filter('commaLess', function() {
+		return function(input) {
+			return (input) ? input.toString().trim().replace(",","") : null;
+		};
+	});
+</script>
+				</div>
+			</div>
+		</div>
+		
+
+
+<div id="footermainPanel">
+  <div id="footerPanel">
+    <ul>
+      <li><a href="/parabank/index.htm">Home</a>| </li>
+      <li><a href="about.htm">About Us</a>| </li>
+      <li><a href="services.htm">Services</a>| </li>
+      <li><a href="http://www.parasoft.com/jsp/products.jsp">Products</a>| </li>
+      <li><a href="http://www.parasoft.com/jsp/pr/contacts.jsp">Locations</a>| </li>
+      <li><a href="http://forums.parasoft.com/">Forum</a>| </li>
+      <li><a href="/parabank/sitemap.htm">Site Map</a>| </li>
+      <li><a href="contact.htm">Contact Us</a></li>
+    </ul>
+    <p class="copyright">© Parasoft. All rights reserved.</p>
+    <ul class="visit">
+      <li>Visit us at:</li>
+      <li><a href="http://www.parasoft.com/" target="_blank">www.parasoft.com</a></li>
+    </ul>
+  </div>
+</div>
+	
+
+</body></html>
